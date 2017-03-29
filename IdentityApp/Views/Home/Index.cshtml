@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<IdentityApp.Models.ApplicationUser>
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -29,3 +30,34 @@
         <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>
+<br />
+<table class="table table-bordered">
+
+    <thead >
+        <tr>
+            <td>Логин</td>
+            <td>Email</td>
+            <td>Возраст</td>
+            <td>День Рождения</td>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.UserName
+            </td>
+            <td>
+                @item.Email
+            </td>
+            <td>
+                @(DateTime.Now.Year- item.BirthDay.Year)
+            </td>
+            <td>
+                @item.BirthDay.ToShortDateString()
+            </td>
+
+        </tr>
+    }
+
+</table>

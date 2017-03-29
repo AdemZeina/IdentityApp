@@ -194,13 +194,35 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703292058306_InitialCreate.cs" />
+    <Compile Include="Migrations\201703292058306_InitialCreate.Designer.cs">
+      <DependentUpon>201703292058306_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703292158012_DataMigration.cs" />
+    <Compile Include="Migrations\201703292158012_DataMigration.Designer.cs">
+      <DependentUpon>201703292158012_DataMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703292209529_DataMigration1.cs" />
+    <Compile Include="Migrations\201703292209529_DataMigration1.Designer.cs">
+      <DependentUpon>201703292209529_DataMigration1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703292248022_DataMigration2.cs" />
+    <Compile Include="Migrations\201703292248022_DataMigration2.Designer.cs">
+      <DependentUpon>201703292248022_DataMigration2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ApplicationManager.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\IdentityDb.mdf" />
+    <Content Include="App_Data\IdentityDb_log.ldf">
+      <DependentUpon>IdentityDb.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -259,7 +281,18 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <EmbeddedResource Include="Migrations\201703292058306_InitialCreate.resx">
+      <DependentUpon>201703292058306_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703292158012_DataMigration.resx">
+      <DependentUpon>201703292158012_DataMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703292209529_DataMigration1.resx">
+      <DependentUpon>201703292209529_DataMigration1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703292248022_DataMigration2.resx">
+      <DependentUpon>201703292248022_DataMigration2.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

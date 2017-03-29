@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IdentityApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,7 +11,13 @@ namespace IdentityApp.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            List<ApplicationUser> users = new List<ApplicationUser>();
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                users = db.Users.ToList();
+
+                return View(users);
+            }
         }
 
         public ActionResult About()

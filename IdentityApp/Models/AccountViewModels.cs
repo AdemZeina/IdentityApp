@@ -65,6 +65,13 @@ namespace IdentityApp.Models
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name ="Возраст")]
+        public int Age { get; set; }
+        [Display(Name = "Дата Рождения")]
+        [DataType(DataType.Date)]
+        public System.DateTime BirthDay { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Адрес электронной почты")]
         public string Email { get; set; }

@@ -9,6 +9,9 @@ namespace IdentityApp.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        public int Age { get; set; }
+        public System.DateTime BirthDay { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Обратите внимание, что authenticationType должен совпадать с типом, определенным в CookieAuthenticationOptions.AuthenticationType
@@ -17,17 +20,24 @@ namespace IdentityApp.Models
             return userIdentity;
         }
     }
-
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class Book
     {
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Author { get; set; }
+    }
+    public class ApplicationContext : IdentityDbContext<ApplicationUser>
+    {
+        public DbSet<Book> Books { get; set; }
+        public ApplicationContext()
+            : base("IdentityDb")
         {
         }
 
-        public static ApplicationDbContext Create()
+        public static ApplicationContext Create()
         {
-            return new ApplicationDbContext();
+            return new ApplicationContext();
         }
     }
+    
 }
