@@ -1,0 +1,46 @@
+﻿@model IEnumerable<IdentityApp.Models.ApplicationUser>
+@{
+    ViewBag.Title = "AsignRole";
+}
+
+<h2>AsignRole</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BirthDay)
+        </th>
+        
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthDay)
+            </td>
+                        @using (Html.BeginForm()) { 
+            <td class="btn-group" >
+                <div class="btn-group" role="group" aria-label="...">
+                    <select class="btn btn-success" name="role">
+                        <option>admin</option>
+                        <option>user</option>
+                    </select>
+                    <div>
+                        <input type="hidden" name="email" value="@item.Email" />
+                        <input type="submit" />
+                    </div>
+                </div>
+            </td>
+            }
+        </tr>
+    }
+    
+</table>
