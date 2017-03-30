@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using IdentityApp.Models.BuisnessModels;
 
 namespace IdentityApp.Models
 {
@@ -24,7 +25,10 @@ namespace IdentityApp.Models
     public class ApplicationContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Book> Books { get; set; }
-        
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Voyage> Voyages { get; set; }
+        public DbSet<BusStop> BusStops { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
         public ApplicationContext()
             : base("IdentityDb")
         {
