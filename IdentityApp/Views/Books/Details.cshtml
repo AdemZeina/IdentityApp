@@ -28,7 +28,14 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    @if (User.IsInRole("admin"))
+    {
+        <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+        </p>
+    }
+    else
+    {
+        @Html.ActionLink("Back to List", "IndexForUsers")
+    }
