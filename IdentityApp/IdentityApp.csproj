@@ -200,25 +200,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201703292058306_InitialCreate.cs" />
-    <Compile Include="Migrations\201703292058306_InitialCreate.Designer.cs">
-      <DependentUpon>201703292058306_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703292158012_DataMigration.cs" />
-    <Compile Include="Migrations\201703292158012_DataMigration.Designer.cs">
-      <DependentUpon>201703292158012_DataMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703292209529_DataMigration1.cs" />
-    <Compile Include="Migrations\201703292209529_DataMigration1.Designer.cs">
-      <DependentUpon>201703292209529_DataMigration1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703292248022_DataMigration2.cs" />
-    <Compile Include="Migrations\201703292248022_DataMigration2.Designer.cs">
-      <DependentUpon>201703292248022_DataMigration2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703301741598_DataMigration3.cs" />
-    <Compile Include="Migrations\201703301741598_DataMigration3.Designer.cs">
-      <DependentUpon>201703301741598_DataMigration3.cs</DependentUpon>
+    <Compile Include="Migrations\201703302323588_DataMigration.cs" />
+    <Compile Include="Migrations\201703302323588_DataMigration.Designer.cs">
+      <DependentUpon>201703302323588_DataMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -326,23 +310,6 @@
     <Content Include="Views\Voyages\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201703292058306_InitialCreate.resx">
-      <DependentUpon>201703292058306_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703292158012_DataMigration.resx">
-      <DependentUpon>201703292158012_DataMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703292209529_DataMigration1.resx">
-      <DependentUpon>201703292209529_DataMigration1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703292248022_DataMigration2.resx">
-      <DependentUpon>201703292248022_DataMigration2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703301741598_DataMigration3.resx">
-      <DependentUpon>201703301741598_DataMigration3.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>
   <ItemGroup>
@@ -357,7 +324,11 @@
   <ItemGroup>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201703302323588_DataMigration.resx">
+      <DependentUpon>201703302323588_DataMigration.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

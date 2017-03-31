@@ -39,7 +39,8 @@ namespace IdentityApp.Controllers
         // GET: Voyages/Create
         public ActionResult Create()
         {
-            ViewBag.DepartureBusStopId = new SelectList(db.BusStops, "Id", "Name");
+            ViewBag.BusStopId = new SelectList(db.BusStops, "Id", "Name");
+            
             return View();
         }
 
@@ -48,8 +49,9 @@ namespace IdentityApp.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,DepartureBusStopId,ArrivelBusStopId,ArrivelTime,DepartureTime,TimeInVoyage,NumberOfVoyage,NameOfVoyage,CountSeats,Price")] Voyage voyage)
+        public ActionResult Create([Bind(Include = "Id,DepartureBusStopId,ArrivelBusStopId,ArrivelTime,DepartureTime,NumberOfVoyage,NameOfVoyage,CountSeats,Price")] Voyage voyage)
         {
+            voyage.TimeInVoyage = (voyage.ArrivelTime - voyage.DepartureTime).TotalHours;
             if (ModelState.IsValid)
             {
                 db.Voyages.Add(voyage);
@@ -57,7 +59,7 @@ namespace IdentityApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DepartureBusStopId = new SelectList(db.BusStops, "Id", "Name", voyage.DepartureBusStopId);
+            ViewBag.BusStopId = new SelectList(db.BusStops, "Id", "Name", voyage.DepartureBusStopId);
             return View(voyage);
         }
 
@@ -73,7 +75,7 @@ namespace IdentityApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DepartureBusStopId = new SelectList(db.BusStops, "Id", "Name", voyage.DepartureBusStopId);
+            ViewBag.BusStopId = new SelectList(db.BusStops, "Id", "Name", voyage.DepartureBusStopId);
             return View(voyage);
         }
 
@@ -82,15 +84,16 @@ namespace IdentityApp.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,DepartureBusStopId,ArrivelBusStopId,ArrivelTime,DepartureTime,TimeInVoyage,NumberOfVoyage,NameOfVoyage,CountSeats,Price")] Voyage voyage)
+        public ActionResult Edit([Bind(Include = "Id,DepartureBusStopId,ArrivelBusStopId,ArrivelTime,DepartureTime,NumberOfVoyage,NameOfVoyage,CountSeats,Price")] Voyage voyage)
         {
+            voyage.TimeInVoyage = (voyage.ArrivelTime - voyage.DepartureTime).TotalHours;
             if (ModelState.IsValid)
             {
                 db.Entry(voyage).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.DepartureBusStopId = new SelectList(db.BusStops, "Id", "Name", voyage.DepartureBusStopId);
+            ViewBag.BusStopId = new SelectList(db.BusStops, "Id", "Name", voyage.DepartureBusStopId);
             return View(voyage);
         }
 
