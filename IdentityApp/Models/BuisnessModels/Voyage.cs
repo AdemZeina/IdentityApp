@@ -27,7 +27,7 @@ namespace IdentityApp.Models
         public int CountSeats { get; set; }
         [Display(Name = "Цена")]
         public int Price { get; set; }
-        public BusStop ArivelBusStop { get; set; }
-        public BusStop DepartureBusStop { get; set; }
+      
+        public List<BusStop> BusStops { get; set; }
     }
 }

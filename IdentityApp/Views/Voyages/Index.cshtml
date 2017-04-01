@@ -12,16 +12,16 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.DepartureBusStop.Name)
+            @Html.DisplayNameFor(model => model.DepartureBusStopId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ArrivelBusStopId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ArrivelTime)
+            @Html.DisplayNameFor(model => model.DepartureTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DepartureTime)
+            @Html.DisplayNameFor(model => model.ArrivelTime)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.TimeInVoyage)
@@ -40,20 +40,29 @@
         </th>
         <th></th>
     </tr>
+    
+    @{ 
+        
+        var busStops =(List<IdentityApp.Models.BusStop>)ViewBag.BusStops; 
+    }
+   
+    
 
 @foreach (var item in Model) {
     <tr>
+        
+       
         <td>
-            @Html.DisplayFor(modelItem => item.DepartureBusStop.Name)
+             @Html.DisplayFor(modelItem => busStops.Single(bs=>bs.Id==item.DepartureBusStopId).Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ArrivelBusStopId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ArrivelTime)
+            @Html.DisplayFor(modelItem => busStops.Single(bs => bs.Id == item.ArrivelBusStopId).Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DepartureTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ArrivelTime)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.TimeInVoyage)

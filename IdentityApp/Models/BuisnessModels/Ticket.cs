@@ -23,7 +23,7 @@ namespace IdentityApp.Models.BuisnessModels
         public int NumberOfSeat { get; set; }
         [Display(Name = "Статус билета")]
         public string Status { get; set; }
-        public Order Order { get; set; }
-
+        
+        public List<Order> Orders { get; set; }
     }
 }

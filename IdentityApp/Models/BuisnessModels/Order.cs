@@ -9,12 +9,15 @@ namespace IdentityApp.Models.BuisnessModels
     public class Order
     {
         public int Id { get; set; }
-        
+        [Display(Name ="Имя поездки")]
         public int VoyageId { get; set; }
-        public int CustomerId { get; set; }
+        [Display(Name = "Имя клиента")]
+        public string CustomerId { get; set; }
         [Display(Name = "Статус")]
         public string Status { get; set; }
+
+        public List<Voyage> Voyages { get; set; }
         
-        public Voyage Voyage { get; set; }
+        
     }
 }

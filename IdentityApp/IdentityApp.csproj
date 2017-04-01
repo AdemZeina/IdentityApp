@@ -200,9 +200,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201703302323588_DataMigration.cs" />
-    <Compile Include="Migrations\201703302323588_DataMigration.Designer.cs">
-      <DependentUpon>201703302323588_DataMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201703312158318_DataMigration1.cs" />
+    <Compile Include="Migrations\201703312158318_DataMigration1.Designer.cs">
+      <DependentUpon>201703312158318_DataMigration1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703312212404_DataMigration.cs" />
+    <Compile Include="Migrations\201703312212404_DataMigration.Designer.cs">
+      <DependentUpon>201703312212404_DataMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704010124069_DataMigration2.cs" />
+    <Compile Include="Migrations\201704010124069_DataMigration2.Designer.cs">
+      <DependentUpon>201704010124069_DataMigration2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -293,6 +301,11 @@
     <Content Include="Views\BusStops\Details.cshtml" />
     <Content Include="Views\BusStops\Edit.cshtml" />
     <Content Include="Views\BusStops\Index.cshtml" />
+    <Content Include="Views\Voyages\Create.cshtml" />
+    <Content Include="Views\Voyages\Delete.cshtml" />
+    <Content Include="Views\Voyages\Details.cshtml" />
+    <Content Include="Views\Voyages\Edit.cshtml" />
+    <Content Include="Views\Voyages\Index.cshtml" />
     <Content Include="Views\Orders\Create.cshtml" />
     <Content Include="Views\Orders\Delete.cshtml" />
     <Content Include="Views\Orders\Details.cshtml" />
@@ -303,11 +316,7 @@
     <Content Include="Views\Tickets\Details.cshtml" />
     <Content Include="Views\Tickets\Edit.cshtml" />
     <Content Include="Views\Tickets\Index.cshtml" />
-    <Content Include="Views\Voyages\Create.cshtml" />
-    <Content Include="Views\Voyages\Delete.cshtml" />
-    <Content Include="Views\Voyages\Details.cshtml" />
-    <Content Include="Views\Voyages\Edit.cshtml" />
-    <Content Include="Views\Voyages\Index.cshtml" />
+    <Content Include="Views\Voyages\IndexForUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -324,9 +333,16 @@
   <ItemGroup>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201703302323588_DataMigration.resx">
-      <DependentUpon>201703302323588_DataMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201703312158318_DataMigration1.resx">
+      <DependentUpon>201703312158318_DataMigration1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703312212404_DataMigration.resx">
+      <DependentUpon>201703312212404_DataMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704010124069_DataMigration2.resx">
+      <DependentUpon>201704010124069_DataMigration2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

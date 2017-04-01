@@ -17,8 +17,17 @@ namespace IdentityApp.Controllers
         // GET: Voyages
         public ActionResult Index()
         {
-            var voyages = db.Voyages.Include(v => v.DepartureBusStop);
-            return View(voyages.ToList());
+            ViewBag.BusStops = db.BusStops.ToList();
+            var model = db.Voyages;
+            
+            return View(model);
+        }
+        public ActionResult IndexForUsers()
+        {
+            ViewBag.BusStops = db.BusStops.ToList();
+            var model = db.Voyages;
+
+            return View(model);
         }
 
         // GET: Voyages/Details/5
@@ -29,6 +38,7 @@ namespace IdentityApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Voyage voyage = db.Voyages.Find(id);
+            voyage.BusStops = db.BusStops.ToList();
             if (voyage == null)
             {
                 return HttpNotFound();
@@ -39,9 +49,10 @@ namespace IdentityApp.Controllers
         // GET: Voyages/Create
         public ActionResult Create()
         {
-            ViewBag.BusStopId = new SelectList(db.BusStops, "Id", "Name");
+            Voyage model = new Voyage();
             
-            return View();
+            model.BusStops = db.BusStops.ToList();
+            return View(model);
         }
 
         // POST: Voyages/Create
@@ -59,7 +70,6 @@ namespace IdentityApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.BusStopId = new SelectList(db.BusStops, "Id", "Name", voyage.DepartureBusStopId);
             return View(voyage);
         }
 
@@ -71,11 +81,11 @@ namespace IdentityApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Voyage voyage = db.Voyages.Find(id);
+            voyage.BusStops = db.BusStops.ToList();
             if (voyage == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.BusStopId = new SelectList(db.BusStops, "Id", "Name", voyage.DepartureBusStopId);
             return View(voyage);
         }
 
@@ -86,14 +96,13 @@ namespace IdentityApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,DepartureBusStopId,ArrivelBusStopId,ArrivelTime,DepartureTime,NumberOfVoyage,NameOfVoyage,CountSeats,Price")] Voyage voyage)
         {
-            voyage.TimeInVoyage = (voyage.ArrivelTime - voyage.DepartureTime).TotalHours;
+            voyage.TimeInVoyage = (voyage.ArrivelTime-voyage.DepartureTime).TotalHours;
             if (ModelState.IsValid)
             {
                 db.Entry(voyage).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.BusStopId = new SelectList(db.BusStops, "Id", "Name", voyage.DepartureBusStopId);
             return View(voyage);
         }
 
@@ -105,6 +114,7 @@ namespace IdentityApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Voyage voyage = db.Voyages.Find(id);
+            voyage.BusStops = db.BusStops.ToList();
             if (voyage == null)
             {
                 return HttpNotFound();

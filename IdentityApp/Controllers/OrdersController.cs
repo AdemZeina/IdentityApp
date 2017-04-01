@@ -18,8 +18,9 @@ namespace IdentityApp.Controllers
         // GET: Orders
         public ActionResult Index()
         {
-            var orders = db.Orders.Include(o => o.Voyage);
-            return View(orders.ToList());
+            ViewBag.Voyages = db.Voyages.ToList();
+            ViewBag.Users = db.Users.ToList();
+            return View(db.Orders.ToList());
         }
 
         // GET: Orders/Details/5
@@ -30,6 +31,7 @@ namespace IdentityApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Order order = db.Orders.Find(id);
+            order.Voyages = db.Voyages.ToList();
             if (order == null)
             {
                 return HttpNotFound();
@@ -38,9 +40,11 @@ namespace IdentityApp.Controllers
         }
 
         // GET: Orders/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            ViewBag.VoyageId = new SelectList(db.Voyages, "Id", "NameOfVoyage");
+            Order model = new Order();
+            model.Voyages = db.Voyages.ToList();
+            model.VoyageId = id;
             return View();
         }
 
@@ -49,8 +53,9 @@ namespace IdentityApp.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,VoyageId,CustomerId,Status")] Order order)
+        public ActionResult Create([Bind(Include = "Id,VoyageId,Status")] Order order)
         {
+            order.CustomerId = db.Users.Single(u => u.UserName == User.Identity.Name).Id;
             if (ModelState.IsValid)
             {
                 db.Orders.Add(order);
@@ -58,7 +63,6 @@ namespace IdentityApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.VoyageId = new SelectList(db.Voyages, "Id", "NameOfVoyage", order.VoyageId);
             return View(order);
         }
 
@@ -70,11 +74,11 @@ namespace IdentityApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Order order = db.Orders.Find(id);
+            order.Voyages = db.Voyages.ToList();
             if (order == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.VoyageId = new SelectList(db.Voyages, "Id", "NameOfVoyage", order.VoyageId);
             return View(order);
         }
 
@@ -83,7 +87,7 @@ namespace IdentityApp.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,VoyageId,CustomerId,Status")] Order order)
+        public ActionResult Edit([Bind(Include = "Id,VoyageId,Status")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +95,6 @@ namespace IdentityApp.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.VoyageId = new SelectList(db.Voyages, "Id", "NameOfVoyage", order.VoyageId);
             return View(order);
         }
 
@@ -103,6 +106,7 @@ namespace IdentityApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Order order = db.Orders.Find(id);
+            order.Voyages = db.Voyages.ToList();
             if (order == null)
             {
                 return HttpNotFound();

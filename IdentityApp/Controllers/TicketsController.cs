@@ -18,8 +18,7 @@ namespace IdentityApp.Controllers
         // GET: Tickets
         public ActionResult Index()
         {
-            var tickets = db.Tickets.Include(t => t.Order);
-            return View(tickets.ToList());
+            return View(db.Tickets.ToList());
         }
 
         // GET: Tickets/Details/5
@@ -40,7 +39,6 @@ namespace IdentityApp.Controllers
         // GET: Tickets/Create
         public ActionResult Create()
         {
-            ViewBag.OrderId = new SelectList(db.Orders, "Id", "Status");
             return View();
         }
 
@@ -58,7 +56,6 @@ namespace IdentityApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.OrderId = new SelectList(db.Orders, "Id", "Status", ticket.OrderId);
             return View(ticket);
         }
 
@@ -74,7 +71,6 @@ namespace IdentityApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.OrderId = new SelectList(db.Orders, "Id", "Status", ticket.OrderId);
             return View(ticket);
         }
 
@@ -91,7 +87,6 @@ namespace IdentityApp.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.OrderId = new SelectList(db.Orders, "Id", "Status", ticket.OrderId);
             return View(ticket);
         }
 
