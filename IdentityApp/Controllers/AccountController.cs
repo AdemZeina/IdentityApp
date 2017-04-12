@@ -151,7 +151,7 @@ namespace IdentityApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, BirthDay=model.BirthDay };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, BirthDay=model.BirthDay,LastName=model.LastName,Name=model.Name };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

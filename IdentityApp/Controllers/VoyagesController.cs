@@ -7,7 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using IdentityApp.Models;
-
+using IdentityApp.Models.BuisnessModels;
 namespace IdentityApp.Controllers
 {
     public class VoyagesController : Controller
@@ -17,8 +17,18 @@ namespace IdentityApp.Controllers
         // GET: Voyages
         public ActionResult Index()
         {
-            var voyages = db.Voyages.Include(v => v.DepartureBusStop);
-            return View(voyages.ToList());
+            ViewBag.BusStops = db.BusStops.ToList();
+            var model = db.Voyages;
+            
+            return View(model);
+        }
+        public ActionResult IndexForUsers()
+        {
+            ViewBag.BusStops = db.BusStops.ToList();
+            
+            var model = db.Voyages;
+
+            return View(model);
         }
 
         // GET: Voyages/Details/5
@@ -29,6 +39,7 @@ namespace IdentityApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Voyage voyage = db.Voyages.Find(id);
+            voyage.BusStops = db.BusStops.ToList();
             if (voyage == null)
             {
                 return HttpNotFound();
@@ -39,25 +50,47 @@ namespace IdentityApp.Controllers
         // GET: Voyages/Create
         public ActionResult Create()
         {
-            ViewBag.DepartureBusStopId = new SelectList(db.BusStops, "Id", "Name");
-            return View();
+            Voyage model = new Voyage()
+            {
+                BusStops = db.BusStops.ToList(),
+                
+            };
+            
+            
+            return View(model);
         }
 
+        
         // POST: Voyages/Create
         // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,DepartureBusStopId,ArrivelBusStopId,ArrivelTime,DepartureTime,TimeInVoyage,NumberOfVoyage,NameOfVoyage,CountSeats,Price")] Voyage voyage)
+        public ActionResult Create([Bind(Include = "Id,DepartureBusStopId,ArrivelBusStopId,ArrivelTime,DepartureTime,NumberOfVoyage,NameOfVoyage,CountSeats,Price")] Voyage voyage)
         {
+
+            List<int> Ids = db.Voyages.Select(v => v.Id).ToList();
+
+
+            voyage.TimeInVoyage = (voyage.ArrivelTime - voyage.DepartureTime).TotalHours;
             if (ModelState.IsValid)
             {
                 db.Voyages.Add(voyage);
                 db.SaveChanges();
+
+                List<Ticket> tickets = new List<Ticket>();
+                int NumberOfSeat = 1;
+                int IdLeft = db.Voyages.Select(v => v.Id).Except(Ids).FirstOrDefault();
+                for (int i = 0; i < voyage.CountSeats; i++)
+                {
+                    tickets.Add(new Ticket { VoyageId = IdLeft, NumberOfSeat = NumberOfSeat, Status = "Свободен" });
+                    NumberOfSeat++;
+                }
+                db.Tickets.AddRange(tickets);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DepartureBusStopId = new SelectList(db.BusStops, "Id", "Name", voyage.DepartureBusStopId);
             return View(voyage);
         }
 
@@ -69,11 +102,11 @@ namespace IdentityApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Voyage voyage = db.Voyages.Find(id);
+            voyage.BusStops = db.BusStops.ToList();
             if (voyage == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.DepartureBusStopId = new SelectList(db.BusStops, "Id", "Name", voyage.DepartureBusStopId);
             return View(voyage);
         }
 
@@ -82,15 +115,15 @@ namespace IdentityApp.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,DepartureBusStopId,ArrivelBusStopId,ArrivelTime,DepartureTime,TimeInVoyage,NumberOfVoyage,NameOfVoyage,CountSeats,Price")] Voyage voyage)
+        public ActionResult Edit([Bind(Include = "Id,DepartureBusStopId,ArrivelBusStopId,ArrivelTime,DepartureTime,NumberOfVoyage,NameOfVoyage,CountSeats,Price")] Voyage voyage)
         {
+            voyage.TimeInVoyage = (voyage.ArrivelTime-voyage.DepartureTime).TotalHours;
             if (ModelState.IsValid)
             {
                 db.Entry(voyage).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.DepartureBusStopId = new SelectList(db.BusStops, "Id", "Name", voyage.DepartureBusStopId);
             return View(voyage);
         }
 
@@ -102,6 +135,7 @@ namespace IdentityApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Voyage voyage = db.Voyages.Find(id);
+            voyage.BusStops = db.BusStops.ToList();
             if (voyage == null)
             {
                 return HttpNotFound();

@@ -1,20 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+
 
 namespace IdentityApp.Models.BuisnessModels
 {
     public class Ticket
     {
+        
         public int Id { get; set; }
-        public int OrderId { get; set; }
-        public string CustomerName { get; set; }
-        public string LastName { get; set; }
-        public int PassportId { get; set; }
-        public int NumberOfSeat { get; set; }
-        public string Status { get; set; }
-        public Order Order { get; set; }
 
+        [Display(Name = "ID Поездки")]
+        public int VoyageId { get; set; }
+        [Display(Name = "ID заказа")]
+        public int OrderId { get; set; }
+        [Display(Name = "Имя клиента")]
+        public string CustomerName { get; set; }
+        [Display(Name = "Фамилия клиента")]
+        public string LastName { get; set; }
+        [Display(Name = "Номер паспорта")]
+        public int PassportId { get; set; }
+        [Display(Name = "Номер места")]
+        public int NumberOfSeat { get; set; }
+        [Display(Name = "Статус билета")]
+        public string Status { get; set; }
+
+
+        public List<Voyage> Voyages { get; set; } 
+        
+        public List<Order> Orders { get; set; }
     }
 }

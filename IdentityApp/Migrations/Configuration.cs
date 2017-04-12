@@ -10,7 +10,6 @@ namespace IdentityApp.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "IdentityApp.Models.ApplicationContext";
         }
 
         protected override void Seed(IdentityApp.Models.ApplicationContext context)

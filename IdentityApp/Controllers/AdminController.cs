@@ -8,13 +8,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using IdentityApp.Models.BuisnessModels;
 
 namespace IdentityApp.Controllers
 {
     [Authorize(Roles ="admin")]
     public class AdminController : Controller
     {
-        
+
+        ApplicationContext db = new ApplicationContext();
         // GET: Admin
         public ActionResult Index()
         {
@@ -27,6 +29,21 @@ namespace IdentityApp.Controllers
                 roles = userManager.GetRoles(user.Id);
             return View(roles);
             
+        }
+        public ActionResult IndexForUser()
+        {
+
+            
+            List<int> orders = db.Orders.Where(o=>o.CustomerId==User.Identity.Name).Select(o=>o.Id).ToList();
+            List<Ticket> tickets = new List<Ticket>();
+            foreach (var order in orders)
+            {
+                tickets.Add(db.Tickets.Single(t=>t.OrderId==order));
+            }
+
+           
+            return View(tickets);
+
         }
         [HttpGet]
         public ActionResult AsignRole()
@@ -46,8 +63,6 @@ namespace IdentityApp.Controllers
         {
            
 
-            using (ApplicationContext db = new ApplicationContext())
-            {
                 var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
                 var user = db.Users.Single(u => u.Email == email);
                 IList<string> roles = userManager.GetRoles(user.Id);
@@ -59,7 +74,7 @@ namespace IdentityApp.Controllers
                 userManager.AddToRole(user.Id,role);
                 
 
-            }
+            
 
                 return RedirectToAction("AsignRole");
         }

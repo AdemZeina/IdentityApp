@@ -18,10 +18,24 @@ namespace IdentityApp.Controllers
         // GET: Orders
         public ActionResult Index()
         {
-            var orders = db.Orders.Include(o => o.Voyage);
-            return View(orders.ToList());
+            ViewBag.Voyages = db.Voyages.ToList();
+            ViewBag.Users = db.Users.ToList();
+            return View(db.Orders.ToList());
         }
+        [Authorize(Roles ="user,admin")]
+        public ActionResult IndexForUsers()
+        {
 
+            List<int> orders = db.Orders.Where(o => o.CustomerId == User.Identity.Name).Select(o => o.Id).ToList();
+            List<Ticket> tickets = new List<Ticket>();
+            foreach (var order in orders)
+            {
+                tickets.Add(db.Tickets.Single(t => t.OrderId == order));
+            }
+
+
+            return View(tickets);
+        }
         // GET: Orders/Details/5
         public ActionResult Details(int? id)
         {
@@ -30,6 +44,7 @@ namespace IdentityApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Order order = db.Orders.Find(id);
+            order.Voyages = db.Voyages.ToList();
             if (order == null)
             {
                 return HttpNotFound();
@@ -37,30 +52,69 @@ namespace IdentityApp.Controllers
             return View(order);
         }
 
-        // GET: Orders/Create
-        public ActionResult Create()
+        [Authorize(Roles = "user,admin")]
+        [HttpGet]
+        public ActionResult Create(int id)
         {
-            ViewBag.VoyageId = new SelectList(db.Voyages, "Id", "NameOfVoyage");
-            return View();
+            Order model = new Order()
+            {
+                CustomerId = User.Identity.Name,
+                VoyageId = id,
+                Status = "Забранированно",
+                Voyages = db.Voyages.ToList(),
+                
+                
+                
+            };
+
+            ViewBag.FreeSeats = db.Tickets.Where(t => t.VoyageId == id && t.Status == "Свободен").Select(t=>t.NumberOfSeat).ToList();
+             
+
+            return View(model);
+        }
+
+        [Authorize(Roles ="user,admin")]
+        [HttpPost]
+        // GET: Orders/Create
+        public ActionResult Create([Bind(Include = "VoyageId,CustomerId,Status")]Order model,int seat)
+        {
+
+                model.SeatNumber = seat;
+                db.Orders.Add(model);
+                db.SaveChanges();
+                var query = db.Tickets.Where(t => t.VoyageId == model.VoyageId && t.NumberOfSeat == seat);
+                foreach(var que in query)
+                {
+                    que.OrderId = db.Orders.Single(o => o.VoyageId == model.VoyageId && o.CustomerId == model.CustomerId && o.SeatNumber==seat).Id;
+                    que.Status = "Забронированно";
+                    que.CustomerName = db.Users.Single(u => u.UserName == model.CustomerId).Name;
+                    que.LastName = db.Users.Single(u => u.UserName == model.CustomerId).LastName;
+                }
+                db.SaveChanges();
+
+            return RedirectToAction("IndexForUsers");
+            
+            
         }
 
         // POST: Orders/Create
         // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,VoyageId,CustomerId,Status")] Order order)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Orders.Add(order);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create([Bind(Include = "Id,VoyageId,Status")] Order order)
+        //{
 
-            ViewBag.VoyageId = new SelectList(db.Voyages, "Id", "NameOfVoyage", order.VoyageId);
-            return View(order);
-        }
+            
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Orders.Add(order);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    return View(order);
+        //}
 
         // GET: Orders/Edit/5
         public ActionResult Edit(int? id)
@@ -70,11 +124,11 @@ namespace IdentityApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Order order = db.Orders.Find(id);
+            order.Voyages = db.Voyages.ToList();
             if (order == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.VoyageId = new SelectList(db.Voyages, "Id", "NameOfVoyage", order.VoyageId);
             return View(order);
         }
 
@@ -83,7 +137,7 @@ namespace IdentityApp.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,VoyageId,CustomerId,Status")] Order order)
+        public ActionResult Edit([Bind(Include = "Id,VoyageId,Status")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +145,6 @@ namespace IdentityApp.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.VoyageId = new SelectList(db.Voyages, "Id", "NameOfVoyage", order.VoyageId);
             return View(order);
         }
 
@@ -103,6 +156,7 @@ namespace IdentityApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Order order = db.Orders.Find(id);
+            order.Voyages = db.Voyages.ToList();
             if (order == null)
             {
                 return HttpNotFound();

@@ -69,6 +69,14 @@ namespace IdentityApp.Models
         [DataType(DataType.Date)]
         public System.DateTime BirthDay { get; set; }
 
+        [Display(Name = "Имя")]
+        [DataType(DataType.Text)]
+        public string Name { get; set; }
+
+        [Display(Name = "Фамилия")]
+        [DataType(DataType.Text)]
+        public string LastName { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Адрес электронной почты")]
